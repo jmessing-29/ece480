@@ -3,7 +3,9 @@ from tkinter import *
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
+import matplotlib.animation as animation
 import time
+import numpy as np
 
 
 # Create the main window
@@ -19,53 +21,37 @@ root.attributes('-topmost', True)
 
 root.config(bg="skyblue")
 
-left_frame  = Frame(root,  width=200,  height=400,  bg='grey')
-left_frame.pack(side='left',  fill='both',  padx=10,  pady=5,  expand=True)
+# Create a matplotlib figure and axis
+fig = plt.figure(figsize=(6, 4))
+ax = fig.add_subplot(111)
+ax.set_xlim(0, 10)
+ax.set_ylim(0, 1)
+line, = ax.plot([], [])
+ax.set_title("Contaminant Sensing")
+ax.set_xlabel("Time")
+ax.set_ylabel("Concentration")
+canvas = FigureCanvasTkAgg(fig, master=root)
+canvas_widget = canvas.get_tk_widget()
+canvas_widget.pack()
 
-right_frame  =  Frame(root,  width=650,  height=400,  bg='grey')
-right_frame.pack(side='right',  fill='both',  padx=10,  pady=5,  expand=True)
+x_data = []
+y_data = []
 
-import numpy as np
-
-def plot(data):
-  fig, ax = plt.subplots(figsize=(5, 4), dpi=100)
-  x = np.arange(len(data))
-  ax.plot(x, data)
-  ax.set_title("Real-time Plot")
-  ax.set_xlabel("Time")
-  ax.set_ylabel("Data")
-  return fig
-
-def collect_data():
-  data = []
-  fig, ax = plt.subplots(figsize=(5, 4), dpi=100)
-  ax.set_title("Real-time Plot")
-  ax.set_xlabel("Time")
-  ax.set_ylabel("Data")
-  canvas = FigureCanvasTkAgg(fig, master=left_frame)
-  canvas.get_tk_widget().pack()
-  while True:
-    value = input("Enter data: ")
-    if value == "stop":
-      return fig
-    data.append(float(value))
-    ax.clear()
-    x = np.arange(len(data))
-    ax.plot(x, data)
+def update_plot():
+    x_data.append(len(x_data))
+    y_data.append(np.random.random())
+    line.set_data(x_data, y_data)
+    ax.relim()
+    ax.autoscale_view()
     canvas.draw()
-    time.sleep(0.5) # wait for 1 second before prompting again
+    root.after(500, update_plot)  # Update every half second
 
+# Start the animation
+start_button = Button(root, text="Start Experiment", command=update_plot)
+start_button.pack()
+# stop_button = Button(root, text="Stop Experiment", command=update_plot)
+# stop_button.pack()
+# update_plot()
 
-fig = collect_data()
-canvas = FigureCanvasTkAgg(fig, master=right_frame)
-canvas.get_tk_widget().pack()
-
-# Start the main event loop
-root.mainloop()
-
-canvas = FigureCanvasTkAgg(fig, master=right_frame)
-canvas.get_tk_widget().pack()
-
-
-# Start the main event loop
+# Start the tkinter main loop
 root.mainloop()
