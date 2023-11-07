@@ -1,0 +1,71 @@
+import tkinter as tk
+from tkinter import *
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import matplotlib.pyplot as plt
+from matplotlib.figure import Figure
+import time
+
+
+# Create the main window
+root = tk.Tk()
+root.title("Contaminant Sensing")
+
+# Set window dimensions to full screen dimensions
+screen_width = root.winfo_screenwidth()
+screen_height = root.winfo_screenheight()
+root.geometry(f"{screen_width}x{screen_height}")
+root.attributes('-topmost', True)
+
+
+root.config(bg="skyblue")
+
+left_frame  = Frame(root,  width=200,  height=400,  bg='grey')
+left_frame.pack(side='left',  fill='both',  padx=10,  pady=5,  expand=True)
+
+right_frame  =  Frame(root,  width=650,  height=400,  bg='grey')
+right_frame.pack(side='right',  fill='both',  padx=10,  pady=5,  expand=True)
+
+import numpy as np
+
+def plot(data):
+  fig, ax = plt.subplots(figsize=(5, 4), dpi=100)
+  x = np.arange(len(data))
+  ax.plot(x, data)
+  ax.set_title("Real-time Plot")
+  ax.set_xlabel("Time")
+  ax.set_ylabel("Data")
+  return fig
+
+def collect_data():
+  data = []
+  fig, ax = plt.subplots(figsize=(5, 4), dpi=100)
+  ax.set_title("Real-time Plot")
+  ax.set_xlabel("Time")
+  ax.set_ylabel("Data")
+  canvas = FigureCanvasTkAgg(fig, master=left_frame)
+  canvas.get_tk_widget().pack()
+  while True:
+    value = input("Enter data: ")
+    if value == "stop":
+      return fig
+    data.append(float(value))
+    ax.clear()
+    x = np.arange(len(data))
+    ax.plot(x, data)
+    canvas.draw()
+    time.sleep(0.5) # wait for 1 second before prompting again
+
+
+fig = collect_data()
+canvas = FigureCanvasTkAgg(fig, master=right_frame)
+canvas.get_tk_widget().pack()
+
+# Start the main event loop
+root.mainloop()
+
+canvas = FigureCanvasTkAgg(fig, master=right_frame)
+canvas.get_tk_widget().pack()
+
+
+# Start the main event loop
+root.mainloop()
