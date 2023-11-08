@@ -28,15 +28,18 @@ canvas = FigureCanvasTkAgg(fig, master=root)
 
 # Create and arrange the widgets using the grid manager
 canvas_widget = canvas.get_tk_widget()
-canvas_widget.grid(row=0, column=0, columnspan=2)
+canvas_widget.grid(row=0, column=0, columnspan=2, padx=10, pady=10)
 
 x_data = []
 y_data = []
 
 animation_running = False
+max_time = 60
 
 def update_plot(i):
     if animation_running:
+        if len(x_data) == max_time:
+            stop_animation()
         x_data.append(len(x_data))
         y_data.append(np.random.random())
         line.set_data(x_data, y_data)
@@ -54,6 +57,10 @@ def stop_animation():
     global animation_running
     animation_running = False
 
+def set_max_time():
+    global max_time
+    max_time = int(max_time_entry.get())
+
 # Create the animation
 ani = FuncAnimation(fig, update_plot, blit=False, interval=1000)
 
@@ -62,6 +69,14 @@ start_button = Button(root, text="Start Experiment", command=start_animation)
 start_button.grid(row=1, column=0)
 stop_button = Button(root, text="Stop Experiment", command=stop_animation)
 stop_button.grid(row=1, column=1)
+
+# Add text box for configuring maximum time
+max_time_label = Label(root, text="Max Time:")
+max_time_label.grid(row=4, column=0, padx=10, pady=10)
+max_time_entry = Entry(root, textvariable=max_time)
+max_time_entry.grid(row=4, column=1, padx=10, pady=10)
+max_time_button = Button(root, text="Set Max Time", command=set_max_time)
+max_time_button.grid(row=5, column=0, columnspan=2, padx=10, pady=10)
 
 # Start the tkinter main loop
 root.mainloop()
