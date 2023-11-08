@@ -24,8 +24,8 @@ root.config(bg="skyblue")
 # Create a matplotlib figure and axis
 fig = plt.figure(figsize=(6, 4))
 ax = fig.add_subplot(111)
-ax.set_xlim(0, 10)
-ax.set_ylim(0, 1)
+# ax.set_xlim(0, 10)
+# ax.set_ylim(0, 1)
 line, = ax.plot([], [])
 ax.set_title("Contaminant Sensing")
 ax.set_xlabel("Time")
@@ -37,20 +37,35 @@ canvas_widget.pack()
 x_data = []
 y_data = []
 
+animation_running = False
+
 def update_plot():
-    x_data.append(len(x_data))
-    y_data.append(np.random.random())
-    line.set_data(x_data, y_data)
-    ax.relim()
-    ax.autoscale_view()
-    canvas.draw()
-    root.after(500, update_plot)  # Update every half second
+    if animation_running:
+      x_data.append(len(x_data))
+      y_data.append(np.random.random())
+      line.set_data(x_data, y_data)
+      
+      # Dynamically adjust the x and y axis limits based on data
+      ax.relim()
+      ax.autoscale_view(tight=True)
+      
+      canvas.draw()
+      root.after(500, update_plot)  # Update every half second
+
+def start_animation():
+    global animation_running
+    animation_running = True
+    update_plot()
+
+def stop_animation():
+    global animation_running
+    animation_running = False
 
 # Start the animation
-start_button = Button(root, text="Start Experiment", command=update_plot)
+start_button = Button(root, text="Start Experiment", command=lambda: start_animation() if not animation_running else None)
 start_button.pack()
-# stop_button = Button(root, text="Stop Experiment", command=update_plot)
-# stop_button.pack()
+stop_button = Button(root, text="Stop Experiment", command=lambda: stop_animation() if animation_running else None)
+stop_button.pack()
 # update_plot()
 
 # Start the tkinter main loop
