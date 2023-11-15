@@ -93,6 +93,17 @@ def bt_Connect():
         log_message(income.decode())
     # bluetooth.close()
 
+def bt_Disconnect():
+    print("Disconnect")
+
+    global bluetooth
+    try:
+        bluetooth.close()
+    except serial.SerialException:
+        print("Exception occurred")
+    else:
+        log_message("BT device disconnected")
+    # bluetooth.close()
 def bt_ON():
     global bluetooth
     try:
@@ -112,14 +123,52 @@ def bt_ON():
 def bt_OFF():
     global bluetooth
     try:
-        bluetooth.close()
-        log_message("Device Disconnected")
+        bluetooth.write(b'b')
+        income = bluetooth.readline()
+        print("Message from bluetooth: " + income.decode())
+
     except serial.SerialException:
-        # print("Exception occurred, likely no device connected")
-        log_message("Exception occurred, likely no device connected")
+        print("Exception occurred, likely no device connected")
     except AttributeError:
-        # print("Exception occurred, likely no device connected")
-        log_message("Exception occurred, likely no device connected")
+        print("Exception occurred, likely no device connected")
+
+
+def bt_5v():
+    global bluetooth
+    try:
+        bluetooth.write(b'y')
+        income = bluetooth.readline()
+        print("Message from bluetooth: " + income.decode())
+
+    except serial.SerialException:
+        print("Exception occurred, likely no device connected")
+    except AttributeError:
+        print("Exception occurred, likely no device connected")
+
+
+def bt_3_5v():
+    global bluetooth
+    try:
+        bluetooth.write(b'a')
+        income = bluetooth.readline()
+        print("Message from bluetooth: " + income.decode())
+
+    except serial.SerialException:
+        print("Exception occurred, likely no device connected")
+    except AttributeError:
+        print("Exception occurred, likely no device connected")
+
+
+def bt_Disconnect():
+    print("OFF Clicked")
+    global bluetooth
+    try:
+        bluetooth.write(b'z')
+        bluetooth.close()
+    except serial.SerialException:
+        print("Exception occurred, likely no device connected")
+    except AttributeError:
+        print("Exception occurred, likely no device connected")
 
 def log_message(message):
     log_entry.config(state='normal')  # Enable editing of the box
