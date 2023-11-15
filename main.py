@@ -131,9 +131,7 @@ def reset():
     global x_data, y_data
     x_data = []
     y_data = []
-    
     log_message("Experiment reset")
-
 
 # Create the animation
 ani = FuncAnimation(fig, update_plot, blit=False, interval=1000)
@@ -156,9 +154,6 @@ bt_buttonOFF.grid(row=4, column=0)
 
 bt_buttonON = Button(root, text="BT ON", command=bt_ON)
 bt_buttonON.grid(row=4, column=1)
-
-
-
 
 
 # Add text box for configuring maximum time
