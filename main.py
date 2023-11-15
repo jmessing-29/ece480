@@ -38,8 +38,8 @@ animation_running = False
 max_time = 60
 
 # set up BT
-outgoingPort = "COM6"
-incomingPort = "COM7"
+outgoingPort = 'dev/tty.HC-05-DevB'
+incomingPort = 'dev/tty.HC-05-DevB'
 bluetooth = "filler"
 
 # functions
@@ -101,9 +101,10 @@ def bt_Disconnect():
         bluetooth.close()
     except serial.SerialException:
         print("Exception occurred")
+        log_message("Serial Exception Occured")
     else:
         log_message("BT device disconnected")
-    # bluetooth.close()
+
 def bt_ON():
     global bluetooth
     try:
@@ -234,3 +235,6 @@ log_entry.config(state='disabled')  # Make the text widget read-only
 
 # Start the tkinter main loop
 root.mainloop()
+
+
+# flush
