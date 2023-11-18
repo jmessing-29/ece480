@@ -65,22 +65,18 @@ def start_animation():
     ani.event_source.start()
     log_message("Experiment started")
 
-
 def stop_animation():
     global animation_running
     animation_running = False
     log_message("Experiment stopped")
-
 
 def set_max_time():
     global max_time
     max_time = int(max_time_entry.get())
     log_message(f"Max time set to {max_time} seconds")
 
-
 def bt_Connect():
     print("ON Clicked")
-
     global bluetooth
     try:
         bluetooth = Serial(outgoingPort, 9600)
@@ -97,7 +93,6 @@ def bt_Connect():
 
 def bt_Disconnect():
     print("Disconnect")
-
     global bluetooth
     try:
         bluetooth.close()
@@ -115,7 +110,6 @@ def bt_ON():
         print(income.decode())
         log_message("Device Connected")
         print("Message from bluetooth: " + income.decode())
-
     except serial.SerialException:
         # print("Exception occurred, likely no device connected")
         log_message("Exception occurred, likely no device connected")
@@ -129,12 +123,10 @@ def bt_OFF():
         bluetooth.write(b'b')
         income = bluetooth.readline()
         print("Message from bluetooth: " + income.decode())
-
     except serial.SerialException:
         print("Serial Exception Cccurred")
     except AttributeError:
         print("AttributeError occurred")
-
 
 def bt_5v():
     global bluetooth
@@ -151,7 +143,6 @@ def bt_5v():
         print("Exception occurred, likely no device connected")
         log_message("Attribute Error Occured")
 
-
 def bt_3_5v():
     global bluetooth
     try:
@@ -167,7 +158,6 @@ def bt_3_5v():
         print("Exception occurred, likely no device connected")
         log_message("Attribute Error Occured")
 
-
 def bt_Disconnect():
     print("OFF Clicked")
     global bluetooth
@@ -179,7 +169,6 @@ def bt_Disconnect():
     except AttributeError:
         print("Exception occurred, likely no device connected")
 
-
 def save():
     current_time = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     filename = f"graph_{current_time}.png"
@@ -188,9 +177,7 @@ def save():
     global x_data, y_data
     df = pd.DataFrame({'Time': x_data, 'Concentration': y_data})
     df.to_csv(f"data_{current_time}.csv", index=False)
-
     
-
 def log_message(message):
     log_entry.config(state='normal')  # Enable editing of the box
     log_entry.insert(tk.END, message + "\n\n")  # Add message to end
