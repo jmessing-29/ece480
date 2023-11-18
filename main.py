@@ -9,6 +9,8 @@ from serial import Serial
 import serial
 
 import time
+import datetime
+import csv
 
 # Create the main window
 root = tk.Tk()
@@ -129,9 +131,9 @@ def bt_OFF():
         print("Message from bluetooth: " + income.decode())
 
     except serial.SerialException:
-        print("Exception occurred, likely no device connected")
+        print("Serial Exception Cccurred")
     except AttributeError:
-        print("Exception occurred, likely no device connected")
+        print("AttributeError occurred")
 
 
 def bt_5v():
@@ -140,11 +142,14 @@ def bt_5v():
         bluetooth.write(b'y')
         income = bluetooth.readline()
         print("Message from bluetooth: " + income.decode())
+        log_message("5v Pump Activated")
 
     except serial.SerialException:
         print("Exception occurred, likely no device connected")
+        log_message("Serial Exception Occured")
     except AttributeError:
         print("Exception occurred, likely no device connected")
+        log_message("Attribute Error Occured")
 
 
 def bt_3_5v():
@@ -153,11 +158,14 @@ def bt_3_5v():
         bluetooth.write(b'a')
         income = bluetooth.readline()
         print("Message from bluetooth: " + income.decode())
+        log_message("3.5v Pump Activated")
 
     except serial.SerialException:
         print("Exception occurred, likely no device connected")
+        log_message("Serial Exception Occured")
     except AttributeError:
         print("Exception occurred, likely no device connected")
+        log_message("Attribute Error Occured")
 
 
 def bt_Disconnect():
@@ -170,6 +178,14 @@ def bt_Disconnect():
         print("Exception occurred, likely no device connected")
     except AttributeError:
         print("Exception occurred, likely no device connected")
+
+
+def save():
+    current_time = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    filename = f"graph_{current_time}.png"
+    plt.savefig(filename)
+    log_message(f"Saved figure to {filename}")
+    
 
 def log_message(message):
     log_entry.config(state='normal')  # Enable editing of the box
@@ -218,6 +234,9 @@ bt_buttonPump5v.grid(row=8, column=1)
 
 bt_buttonPump3_5v = Button(root, text="3.5v", command=bt_3_5v)
 bt_buttonPump3_5v.grid(row=8, column=0)
+
+bt_buttonPump3_5v = Button(root, text="Save Figure", command=save)
+bt_buttonPump3_5v.grid(row=9, column=0)
 
 
 # Add text box for configuring maximum time
