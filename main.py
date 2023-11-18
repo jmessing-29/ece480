@@ -239,7 +239,7 @@ bt_buttonPump5v.grid(row=8, column=1)
 bt_buttonPump3_5v = Button(root, text="3.5v", command=bt_3_5v)
 bt_buttonPump3_5v.grid(row=8, column=0)
 
-bt_save = Button(root, text="Save Figure and data", command=save)
+bt_save = Button(root, text="Save Figure and Data", command=save)
 bt_save.grid(row=9, column=0)
 
 
