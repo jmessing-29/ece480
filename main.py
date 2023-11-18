@@ -174,7 +174,6 @@ def save():
     filename = f"graph_{current_time}.png"
     plt.savefig(filename)
     log_message(f"Saved figure to {filename}")
-    global x_data, y_data
     df = pd.DataFrame({'Time': x_data, 'Concentration': y_data})
     df.to_csv(f"data_{current_time}.csv", index=False)
     
