@@ -7,7 +7,7 @@ from matplotlib.animation import FuncAnimation
 import numpy as np
 from serial import Serial
 import serial
-
+import pandas as pd
 import time
 import datetime
 import csv
@@ -185,6 +185,10 @@ def save():
     filename = f"graph_{current_time}.png"
     plt.savefig(filename)
     log_message(f"Saved figure to {filename}")
+    global x_data, y_data
+    df = pd.DataFrame({'Time': x_data, 'Concentration': y_data})
+    df.to_csv(f"data_{current_time}.csv", index=False)
+
     
 
 def log_message(message):
@@ -235,8 +239,8 @@ bt_buttonPump5v.grid(row=8, column=1)
 bt_buttonPump3_5v = Button(root, text="3.5v", command=bt_3_5v)
 bt_buttonPump3_5v.grid(row=8, column=0)
 
-bt_buttonPump3_5v = Button(root, text="Save Figure", command=save)
-bt_buttonPump3_5v.grid(row=9, column=0)
+bt_save = Button(root, text="Save Figure and data", command=save)
+bt_save.grid(row=9, column=0)
 
 
 # Add text box for configuring maximum time
