@@ -27,8 +27,8 @@ fig = plt.figure(figsize=(6, 4))
 ax = fig.add_subplot(111)
 line, = ax.plot([], [])
 ax.set_title("Contaminant Sensing")
-ax.set_xlabel("Time")
-ax.set_ylabel("Concentration")
+ax.set_xlabel("Current")
+ax.set_ylabel("Voltage")
 ax.grid()
 canvas = FigureCanvasTkAgg(fig, master=root)
 
@@ -174,7 +174,7 @@ def save():
     filename = f"graph_{current_time}.png"
     plt.savefig(filename)
     log_message(f"Saved figure to {filename}")
-    df = pd.DataFrame({'Time': x_data, 'Concentration': y_data})
+    df = pd.DataFrame({'Current': x_data, 'Voltage': y_data})
     df.to_csv(f"data_{current_time}.csv", index=False)
     
 def log_message(message):
@@ -248,12 +248,12 @@ bt_save = Button(root, text="Save Figure and Data", command=save)
 bt_save.grid(row=6, column=0, padx=10, pady=10)
 
 # Add text box for configuring maximum time
-max_time_label = Label(root, text="Max Time:")
-max_time_label.grid(row=6, column=0, padx=10, pady=10)
-max_time_entry = Entry(root, textvariable=max_time)
-max_time_entry.grid(row=6, column=1, padx=10, pady=10)
-max_time_button = Button(root, text="Set Max Time", command=set_max_time)
-max_time_button.grid(row=7, column=0, columnspan=2, padx=10, pady=10)
+# max_time_label = Label(root, text="Max Time:")
+# max_time_label.grid(row=6, column=0, padx=10, pady=10)
+# max_time_entry = Entry(root, textvariable=max_time)
+# max_time_entry.grid(row=6, column=1, padx=10, pady=10)
+# max_time_button = Button(root, text="Set Max Time", command=set_max_time)
+# max_time_button.grid(row=7, column=0, columnspan=2, padx=10, pady=10)
 
 
 
