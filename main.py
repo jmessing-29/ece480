@@ -195,55 +195,67 @@ ani = FuncAnimation(fig, update_plot, blit=False, interval=1000)
 
 # Create and arrange the widgets using the grid manager
 canvas_widget = canvas.get_tk_widget()
-canvas_widget.grid(row=0, column=1, columnspan=4, padx=10, pady=10)
+canvas_widget.grid(row=0, column=0, columnspan=4, padx=10, pady=10)
 
 # Arrange buttons using the grid manager
 start_button = Button(root, text="Start Experiment", command=start_animation)
-start_button.grid(row=1, column=1, padx=10, pady=10, sticky=tk.W+tk.E)
+start_button.grid(row=1, column=0, padx=10, pady=10)
 
 stop_button = Button(root, text="Stop Experiment", command=stop_animation)
-stop_button.grid(row=1, column=2, padx=10, pady=10, sticky=tk.W+tk.E)
+stop_button.grid(row=1, column=1, padx=10, pady=10)
 
 reset_button = Button(root, text="Reset", command=reset)
-reset_button.grid(row=1, column=3, padx=10, pady=10, sticky=tk.W+tk.E)
+reset_button.grid(row=1, column=2, padx=10, pady=10)
+
+# Create and arrange the widgets using the grid manager
+canvas_widget = canvas.get_tk_widget()
+canvas_widget.grid(row=0, column=0, columnspan=4, padx=10, pady=10)
+
+# Arrange buttons using the grid manager
+start_button = Button(root, text="Start Experiment", command=start_animation)
+start_button.grid(row=1, column=0, padx=10, pady=10)
+
+stop_button = Button(root, text="Stop Experiment", command=stop_animation)
+stop_button.grid(row=1, column=1, padx=10, pady=10)
+
+reset_button = Button(root, text="Reset", command=reset)
+reset_button.grid(row=1, column=2, padx=10, pady=10)
+
+# Add logging text box
+log_entry = Text(root, height=8, width=80)  # Adjust height and width as needed
+log_entry.grid(row=2, column=0, columnspan=4, padx=10, pady=10)
+log_entry.config(state='disabled')  # Make the text widget read-only
 
 bt_buttonConn = Button(root, text="BT Connect", command=bt_Connect)
-bt_buttonConn.grid(row=3, column=0)
+bt_buttonConn.grid(row=3, column=0, padx=10, pady=10)
 
 bt_buttonOFF = Button(root, text="BT Disconnect", command=bt_Disconnect)
-bt_buttonOFF.grid(row=3, column=1)
+bt_buttonOFF.grid(row=3, column=1, padx=10, pady=10)
 
 bt_buttonON = Button(root, text="BT ON", command=bt_ON)
-bt_buttonON.grid(row=4, column=0)
+bt_buttonON.grid(row=4, column=0, padx=10, pady=10)
 
 bt_buttonOFF = Button(root, text="BT OFF", command=bt_OFF)
-bt_buttonOFF.grid(row=4, column=1)
+bt_buttonOFF.grid(row=4, column=1, padx=10, pady=10)
 
 bt_buttonPump5v = Button(root, text="5v", command=bt_5v)
-bt_buttonPump5v.grid(row=8, column=1)
+bt_buttonPump5v.grid(row=5, column=0, padx=10, pady=10)
 
 bt_buttonPump3_5v = Button(root, text="3.5v", command=bt_3_5v)
-bt_buttonPump3_5v.grid(row=8, column=0)
+bt_buttonPump3_5v.grid(row=5, column=1, padx=10, pady=10)
 
 bt_save = Button(root, text="Save Figure and Data", command=save)
-bt_save.grid(row=9, column=0)
-
+bt_save.grid(row=6, column=0, padx=10, pady=10)
 
 # Add text box for configuring maximum time
 max_time_label = Label(root, text="Max Time:")
-max_time_label.grid(row=5, column=0, padx=10, pady=10)
+max_time_label.grid(row=6, column=0, padx=10, pady=10)
 max_time_entry = Entry(root, textvariable=max_time)
-max_time_entry.grid(row=5, column=1, padx=10, pady=10)
+max_time_entry.grid(row=6, column=1, padx=10, pady=10)
 max_time_button = Button(root, text="Set Max Time", command=set_max_time)
-max_time_button.grid(row=6, column=0, columnspan=2, padx=10, pady=10)
+max_time_button.grid(row=7, column=0, columnspan=2, padx=10, pady=10)
 
-# add logging text box
-log_entry = Text(root, height=8, width=80)  # Adjust height and width as needed
-log_entry.grid(row=2, column=1, columnspan=3, padx=10, pady=10)
-log_entry.config(state='disabled')  # Make the text widget read-only
+
 
 # Start the tkinter main loop
 root.mainloop()
-
-
-# flush
