@@ -33,7 +33,8 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
   float output = analogRead(potentioVin);
-  Serial.println("Voltage read: "); Serial.println(output * 0.0049);
+  Serial.println("Voltage read: "); 
+  Serial.println(output * 0.0049);
   delay(250);
 
   if (mySerial.available()) 
