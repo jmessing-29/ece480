@@ -19,7 +19,7 @@ root.title("Contaminant Sensing")
 # Set window dimensions to full screen dimensions
 screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()
-root.geometry(f"{screen_width}x{screen_height}")
+root.geometry(f"{screen_width/2}x{screen_height/3}")
 customtkinter.set_default_color_theme("green")
 
 # Create the matplotlib figure and axis
@@ -51,7 +51,7 @@ def update_plot(i):
             stop_animation()
         x_data.append(len(x_data))
         y_data.append(np.random.random())
-        line.set_color('red')
+        line.set_color('blue')
         line.set_data(x_data, y_data)
 
         # Dynamically adjust the x and y axis limits based on data
@@ -179,7 +179,7 @@ def save():
     
 def log_message(message):
     log_entry.config(state='normal')  # Enable editing of the box
-    log_entry.insert(END, message + "\n\n")  # Add message to end
+    log_entry.insert(END, datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S") + '     ' + message + '\n\n')  # Add message to end
     log_entry.see(END)  # keep the bottom message visible
     log_entry.config(state='disabled')  # Disable editing box 
 
@@ -188,7 +188,7 @@ def reset():
     global x_data, y_data
     x_data = []
     y_data = []
-    log_message("Experiment reset")
+    log_message("Experiment reset. Start a new experiment to clear the figure")
 
 # Create the animation
 ani = FuncAnimation(fig, update_plot, blit=False, interval=1000)
@@ -246,16 +246,6 @@ bt_buttonPump3_5v.grid(row=5, column=1, padx=10, pady=10)
 
 bt_save = customtkinter.CTkButton(root, text="Save Figure and Data", command=save)
 bt_save.grid(row=6, column=0, padx=10, pady=10)
-
-# Add text box for configuring maximum time
-# max_time_label = Label(root, text="Max Time:")
-# max_time_label.grid(row=6, column=0, padx=10, pady=10)
-# max_time_entry = Entry(root, textvariable=max_time)
-# max_time_entry.grid(row=6, column=1, padx=10, pady=10)
-# max_time_button = customtkinter.CTkButton(root, text="Set Max Time", command=set_max_time)
-# max_time_button.grid(row=7, column=0, columnspan=2, padx=10, pady=10)
-
-
 
 # Start the tkinter main loop
 root.mainloop()
