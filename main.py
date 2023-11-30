@@ -1,5 +1,5 @@
-import tkinter as tk
 from tkinter import *
+import customtkinter
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
@@ -7,26 +7,28 @@ from matplotlib.animation import FuncAnimation
 import numpy as np
 from serial import Serial
 import serial
-
+import pandas as pd
 import time
+import datetime
+import csv
 
 # Create the main window
-root = tk.Tk()
+root = customtkinter.CTk()
 root.title("Contaminant Sensing")
 
 # Set window dimensions to full screen dimensions
 screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()
-root.geometry(f"{screen_width}x{screen_height}")
-root.config(bg="#1a8bab")
+root.geometry(f"{screen_width/2}x{screen_height/3}")
+customtkinter.set_default_color_theme("green")
 
 # Create the matplotlib figure and axis
 fig = plt.figure(figsize=(6, 4))
 ax = fig.add_subplot(111)
 line, = ax.plot([], [])
 ax.set_title("Contaminant Sensing")
-ax.set_xlabel("Time")
-ax.set_ylabel("Concentration")
+ax.set_xlabel("Current")
+ax.set_ylabel("Voltage")
 ax.grid()
 canvas = FigureCanvasTkAgg(fig, master=root)
 
@@ -38,9 +40,9 @@ animation_running = False
 max_time = 60
 
 # set up BT
-outgoingPort = "COM6"
-incomingPort = "COM7"
-bluetooth = "filler"
+outgoingPort = 'dev/tty.HC-05-DevB'
+incomingPort = 'dev/tty.HC-05-DevB'
+arduino = "filler"
 
 # functions
 def update_plot(i):
@@ -49,7 +51,7 @@ def update_plot(i):
             stop_animation()
         x_data.append(len(x_data))
         y_data.append(np.random.random())
-        line.set_color('red')
+        line.set_color('blue')
         line.set_data(x_data, y_data)
 
         # Dynamically adjust the x and y axis limits based on data
@@ -63,56 +65,51 @@ def start_animation():
     ani.event_source.start()
     log_message("Experiment started")
 
-
 def stop_animation():
     global animation_running
     animation_running = False
     log_message("Experiment stopped")
-
 
 def set_max_time():
     global max_time
     max_time = int(max_time_entry.get())
     log_message(f"Max time set to {max_time} seconds")
 
-
 def bt_Connect():
     print("ON Clicked")
-
-    global bluetooth
+    global arduino
     try:
-        bluetooth = Serial(outgoingPort, 9600)
+        arduino = Serial(outgoingPort, 9600)
         print("Connected")
         log_message("Device Connected")
     except serial.SerialException:
         print("Exception occurred, likely already connected")
     else:
-        bluetooth.write(b'x')
-        income = bluetooth.readline()
+        arduino.write(b'x')
+        income = arduino.readline()
         print(income.decode())
         log_message(income.decode())
-    # bluetooth.close()
+    # arduino.close()
 
 def bt_Disconnect():
     print("Disconnect")
-
-    global bluetooth
+    global arduino
     try:
-        bluetooth.close()
+        arduino.close()
     except serial.SerialException:
         print("Exception occurred")
+        log_message("Serial Exception Occured")
     else:
         log_message("BT device disconnected")
-    # bluetooth.close()
+
 def bt_ON():
-    global bluetooth
+    global arduino
     try:
-        bluetooth.write(b'x')
-        income = bluetooth.readline()
+        arduino.write(b'x')
+        income = arduino.readline()
         print(income.decode())
         log_message("Device Connected")
-        print("Message from bluetooth: " + income.decode())
-
+        print("Message from arduino: " + income.decode())
     except serial.SerialException:
         # print("Exception occurred, likely no device connected")
         log_message("Exception occurred, likely no device connected")
@@ -121,59 +118,69 @@ def bt_ON():
         log_message("Exception occurred, likely no device connected")
 
 def bt_OFF():
-    global bluetooth
+    global arduino
     try:
-        bluetooth.write(b'b')
-        income = bluetooth.readline()
-        print("Message from bluetooth: " + income.decode())
-
+        arduino.write(b'b')
+        income = arduino.readline()
+        print("Message from arduino: " + income.decode())
     except serial.SerialException:
-        print("Exception occurred, likely no device connected")
+        print("Serial Exception Cccurred")
     except AttributeError:
-        print("Exception occurred, likely no device connected")
-
+        print("AttributeError occurred")
 
 def bt_5v():
-    global bluetooth
+    global arduino
     try:
-        bluetooth.write(b'y')
-        income = bluetooth.readline()
-        print("Message from bluetooth: " + income.decode())
+        arduino.write(b'y')
+        income = arduino.readline()
+        print("Message from arduino: " + income.decode())
+        log_message("5v Pump Activated")
 
     except serial.SerialException:
         print("Exception occurred, likely no device connected")
+        log_message("Serial Exception Occured")
     except AttributeError:
         print("Exception occurred, likely no device connected")
-
+        log_message("Attribute Error Occured")
 
 def bt_3_5v():
-    global bluetooth
+    global arduino
     try:
-        bluetooth.write(b'a')
-        income = bluetooth.readline()
-        print("Message from bluetooth: " + income.decode())
+        arduino.write(b'a')
+        income = arduino.readline()
+        print("Message from arduino: " + income.decode())
+        log_message("3.5v Pump Activated")
 
     except serial.SerialException:
         print("Exception occurred, likely no device connected")
+        log_message("Serial Exception Occured")
     except AttributeError:
         print("Exception occurred, likely no device connected")
-
+        log_message("Attribute Error Occured")
 
 def bt_Disconnect():
     print("OFF Clicked")
-    global bluetooth
+    global arduino
     try:
-        bluetooth.write(b'z')
-        bluetooth.close()
+        arduino.write(b'z')
+        arduino.close()
     except serial.SerialException:
         print("Exception occurred, likely no device connected")
     except AttributeError:
         print("Exception occurred, likely no device connected")
 
+def save():
+    current_time = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    filename = f"graph_{current_time}.png"
+    plt.savefig(filename)
+    log_message(f"Saved figure to {filename}")
+    df = pd.DataFrame({'Current': x_data, 'Voltage': y_data})
+    df.to_csv(f"data_{current_time}.csv", index=False)
+    
 def log_message(message):
     log_entry.config(state='normal')  # Enable editing of the box
-    log_entry.insert(tk.END, message + "\n\n")  # Add message to end
-    log_entry.see(tk.END)  # keep the bottom message visible
+    log_entry.insert(END, datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S") + '     ' + message + '\n\n')  # Add message to end
+    log_entry.see(END)  # keep the bottom message visible
     log_entry.config(state='disabled')  # Disable editing box 
 
 def reset():
@@ -181,56 +188,64 @@ def reset():
     global x_data, y_data
     x_data = []
     y_data = []
-    log_message("Experiment reset")
+    log_message("Experiment reset. Start a new experiment to clear the figure")
 
 # Create the animation
 ani = FuncAnimation(fig, update_plot, blit=False, interval=1000)
 
 # Create and arrange the widgets using the grid manager
 canvas_widget = canvas.get_tk_widget()
-canvas_widget.grid(row=0, column=1, columnspan=4, padx=10, pady=10)
+canvas_widget.grid(row=0, column=0, columnspan=4, padx=10, pady=10)
 
 # Arrange buttons using the grid manager
-start_button = Button(root, text="Start Experiment", command=start_animation)
-start_button.grid(row=1, column=1, padx=10, pady=10, sticky=tk.W+tk.E)
+start_button = customtkinter.CTkButton(root, text="Start Experiment", command=start_animation)
+start_button.grid(row=1, column=0, padx=10, pady=10)
 
-stop_button = Button(root, text="Stop Experiment", command=stop_animation)
-stop_button.grid(row=1, column=2, padx=10, pady=10, sticky=tk.W+tk.E)
+stop_button = customtkinter.CTkButton(root, text="Stop Experiment", command=stop_animation)
+stop_button.grid(row=1, column=1, padx=10, pady=10)
 
-reset_button = Button(root, text="Reset", command=reset)
-reset_button.grid(row=1, column=3, padx=10, pady=10, sticky=tk.W+tk.E)
+reset_button = customtkinter.CTkButton(root, text="Reset", command=reset)
+reset_button.grid(row=1, column=2, padx=10, pady=10)
 
-bt_buttonConn = Button(root, text="BT Connect", command=bt_Connect)
-bt_buttonConn.grid(row=3, column=0)
+# Create and arrange the widgets using the grid manager
+canvas_widget = canvas.get_tk_widget()
+canvas_widget.grid(row=0, column=0, columnspan=4, padx=10, pady=10)
 
-bt_buttonOFF = Button(root, text="BT Disconnect", command=bt_Disconnect)
-bt_buttonOFF.grid(row=3, column=1)
+# Arrange buttons using the grid manager
+start_button = customtkinter.CTkButton(root, text="Start Experiment", command=start_animation)
+start_button.grid(row=1, column=0, padx=10, pady=10)
 
-bt_buttonON = Button(root, text="BT ON", command=bt_ON)
-bt_buttonON.grid(row=4, column=0)
+stop_button = customtkinter.CTkButton(root, text="Stop Experiment", command=stop_animation)
+stop_button.grid(row=1, column=1, padx=10, pady=10)
 
-bt_buttonOFF = Button(root, text="BT OFF", command=bt_OFF)
-bt_buttonOFF.grid(row=4, column=1)
+reset_button = customtkinter.CTkButton(root, text="Reset", command=reset)
+reset_button.grid(row=1, column=2, padx=10, pady=10)
 
-bt_buttonPump5v = Button(root, text="5v", command=bt_5v)
-bt_buttonPump5v.grid(row=8, column=1)
-
-bt_buttonPump3_5v = Button(root, text="3.5v", command=bt_3_5v)
-bt_buttonPump3_5v.grid(row=8, column=0)
-
-
-# Add text box for configuring maximum time
-max_time_label = Label(root, text="Max Time:")
-max_time_label.grid(row=5, column=0, padx=10, pady=10)
-max_time_entry = Entry(root, textvariable=max_time)
-max_time_entry.grid(row=5, column=1, padx=10, pady=10)
-max_time_button = Button(root, text="Set Max Time", command=set_max_time)
-max_time_button.grid(row=6, column=0, columnspan=2, padx=10, pady=10)
-
-# add logging text box
+# Add logging text box
 log_entry = Text(root, height=8, width=80)  # Adjust height and width as needed
-log_entry.grid(row=2, column=1, columnspan=3, padx=10, pady=10)
+log_entry.grid(row=2, column=0, columnspan=4, padx=10, pady=10)
 log_entry.config(state='disabled')  # Make the text widget read-only
+
+bt_buttonConn = customtkinter.CTkButton(root, text="BT Connect", command=bt_Connect)
+bt_buttonConn.grid(row=3, column=0, padx=10, pady=10)
+
+bt_buttonOFF = customtkinter.CTkButton(root, text="BT Disconnect", command=bt_Disconnect)
+bt_buttonOFF.grid(row=3, column=1, padx=10, pady=10)
+
+bt_buttonON = customtkinter.CTkButton(root, text="BT ON", command=bt_ON)
+bt_buttonON.grid(row=4, column=0, padx=10, pady=10)
+
+bt_buttonOFF = customtkinter.CTkButton(root, text="BT OFF", command=bt_OFF)
+bt_buttonOFF.grid(row=4, column=1, padx=10, pady=10)
+
+bt_buttonPump5v = customtkinter.CTkButton(root, text="5v", command=bt_5v)
+bt_buttonPump5v.grid(row=5, column=0, padx=10, pady=10)
+
+bt_buttonPump3_5v = customtkinter.CTkButton(root, text="3.5v", command=bt_3_5v)
+bt_buttonPump3_5v.grid(row=5, column=1, padx=10, pady=10)
+
+bt_save = customtkinter.CTkButton(root, text="Save Figure and Data", command=save)
+bt_save.grid(row=6, column=0, padx=10, pady=10)
 
 # Start the tkinter main loop
 root.mainloop()
