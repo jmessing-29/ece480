@@ -42,7 +42,7 @@ max_time = 60
 # set up BT
 outgoingPort = 'dev/tty.HC-05-DevB'
 incomingPort = 'dev/tty.HC-05-DevB'
-bluetooth = "filler"
+arduino = "filler"
 
 # functions
 def update_plot(i):
@@ -77,25 +77,25 @@ def set_max_time():
 
 def bt_Connect():
     print("ON Clicked")
-    global bluetooth
+    global arduino
     try:
-        bluetooth = Serial(outgoingPort, 9600)
+        arduino = Serial(outgoingPort, 9600)
         print("Connected")
         log_message("Device Connected")
     except serial.SerialException:
         print("Exception occurred, likely already connected")
     else:
-        bluetooth.write(b'x')
-        income = bluetooth.readline()
+        arduino.write(b'x')
+        income = arduino.readline()
         print(income.decode())
         log_message(income.decode())
-    # bluetooth.close()
+    # arduino.close()
 
 def bt_Disconnect():
     print("Disconnect")
-    global bluetooth
+    global arduino
     try:
-        bluetooth.close()
+        arduino.close()
     except serial.SerialException:
         print("Exception occurred")
         log_message("Serial Exception Occured")
@@ -103,13 +103,13 @@ def bt_Disconnect():
         log_message("BT device disconnected")
 
 def bt_ON():
-    global bluetooth
+    global arduino
     try:
-        bluetooth.write(b'x')
-        income = bluetooth.readline()
+        arduino.write(b'x')
+        income = arduino.readline()
         print(income.decode())
         log_message("Device Connected")
-        print("Message from bluetooth: " + income.decode())
+        print("Message from arduino: " + income.decode())
     except serial.SerialException:
         # print("Exception occurred, likely no device connected")
         log_message("Exception occurred, likely no device connected")
@@ -118,22 +118,22 @@ def bt_ON():
         log_message("Exception occurred, likely no device connected")
 
 def bt_OFF():
-    global bluetooth
+    global arduino
     try:
-        bluetooth.write(b'b')
-        income = bluetooth.readline()
-        print("Message from bluetooth: " + income.decode())
+        arduino.write(b'b')
+        income = arduino.readline()
+        print("Message from arduino: " + income.decode())
     except serial.SerialException:
         print("Serial Exception Cccurred")
     except AttributeError:
         print("AttributeError occurred")
 
 def bt_5v():
-    global bluetooth
+    global arduino
     try:
-        bluetooth.write(b'y')
-        income = bluetooth.readline()
-        print("Message from bluetooth: " + income.decode())
+        arduino.write(b'y')
+        income = arduino.readline()
+        print("Message from arduino: " + income.decode())
         log_message("5v Pump Activated")
 
     except serial.SerialException:
@@ -144,11 +144,11 @@ def bt_5v():
         log_message("Attribute Error Occured")
 
 def bt_3_5v():
-    global bluetooth
+    global arduino
     try:
-        bluetooth.write(b'a')
-        income = bluetooth.readline()
-        print("Message from bluetooth: " + income.decode())
+        arduino.write(b'a')
+        income = arduino.readline()
+        print("Message from arduino: " + income.decode())
         log_message("3.5v Pump Activated")
 
     except serial.SerialException:
@@ -160,10 +160,10 @@ def bt_3_5v():
 
 def bt_Disconnect():
     print("OFF Clicked")
-    global bluetooth
+    global arduino
     try:
-        bluetooth.write(b'z')
-        bluetooth.close()
+        arduino.write(b'z')
+        arduino.close()
     except serial.SerialException:
         print("Exception occurred, likely no device connected")
     except AttributeError:
