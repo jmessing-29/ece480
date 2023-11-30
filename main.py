@@ -42,22 +42,27 @@ max_time = 60
 # set up BT
 outgoingPort = 'dev/tty.HC-05-DevB'
 incomingPort = 'dev/tty.HC-05-DevB'
-arduino = "filler"
+arduino = Serial('COMX', 9600)  # !! HELLO JACKSON !! Replace 'COMX' with the Arduino's serial port, idk what it is
 
 # functions
 def update_plot(i):
+    global x_data, y_data, ax
+
     if animation_running:
-        if len(x_data) == max_time:
-            stop_animation()
-        x_data.append(len(x_data))
-        y_data.append(np.random.random())
-        line.set_color('blue')
-        line.set_data(x_data, y_data)
-
-        # Dynamically adjust the x and y axis limits based on data
-        ax.relim()
-        ax.autoscale_view(tight=True)
-
+        data = arduino.readline().decode().strip()
+        
+        # Process the received data - assuming comma-separated values for current and voltage
+        try:
+            current, voltage = map(float, data.split(','))  # Adjust as per your received data format
+            x_data.append(current)
+            y_data.append(voltage)
+            
+            # Update the plot
+            line.set_data(x_data, y_data)
+            ax.relim()
+            ax.autoscale_view(tight=True)
+        except ValueError:
+            pass
 
 def start_animation():
     global animation_running
