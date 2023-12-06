@@ -42,7 +42,7 @@ max_time = 60
 # set up BT
 outgoingPort = 'dev/tty.HC-05-DevB'
 incomingPort = 'dev/tty.HC-05-DevB'
-arduino = Serial('COMX', 9600)  # !! HELLO JACKSON !! Replace 'COMX' with the Arduino's serial port, idk what it is
+arduino = Serial('COM5', 9600)  # Arduino Serial port
 
 # functions
 def update_plot(i):
