@@ -78,7 +78,7 @@ def set_sweep_range():
     log_message(f"Sweep range set to {sweep_min, sweep_max} Volts")
 
 def bt_Connect():
-    print("ON Clicked")
+    # print("ON Clicked")
     global arduino
     try:
         arduino = Serial(outgoingPort, 9600)
@@ -126,6 +126,20 @@ def reset():
     y_data = []
     log_message("Experiment reset. Start a new experiment to clear the figure")
 
+# Variable to keep track of the current state of the button
+connect_state = False
+
+def toggle_text():
+    global toggle_state
+    if connect_state:
+        toggle_button.config(text="Off")
+        bt_Connect()
+        connect_state = False
+    else:
+        toggle_button.config(text="On")
+        bt_Disconnect()
+        connect_state = True
+
 # Create the animation
 ani = FuncAnimation(fig, update_plot, blit=False, interval=1000)
 
@@ -156,19 +170,6 @@ bt_buttonConn.grid(row=0, column=0, padx=10, pady=10, sticky="w")
 
 bt_buttonOFF = customtkinter.CTkButton(root, text="BT Disconnect", command=bt_Disconnect, width=10)
 bt_buttonOFF.grid(row=0, column=3, padx=10, pady=10, sticky="e")
-
-
-# Variable to keep track of the current state of the button
-connect_state = False
-
-def toggle_text():
-    global toggle_state
-    if connect_state:
-        toggle_button.config(text="Off")
-        connect_state = False
-    else:
-        toggle_button.config(text="On")
-        connect_state = True
 
 # Create a button that toggles between "on" and "off" when clicked
 toggle_button = Button(root, text="Toggle", command=toggle_text)
