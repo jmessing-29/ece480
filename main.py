@@ -216,11 +216,11 @@ log_entry = Text(root, height=8, width=90)  # Adjust height and width as needed
 log_entry.grid(row=3, column=0, columnspan=5, padx=10, pady=10)
 log_entry.config(state='disabled')  # Make the text widget read-only
 
-bt_buttonConn = customtkinter.CTkButton(root, text="BT Connect", command=bt_Connect)
+bt_buttonConn = customtkinter.CTkButton(root, text="BT Connect", command=bt_Connect, width=10)
 bt_buttonConn.grid(row=0, column=0, padx=10, pady=10)
 
-bt_buttonOFF = customtkinter.CTkButton(root, text="BT Disconnect", command=bt_Disconnect)
-bt_buttonOFF.grid(row=0, column=1, padx=10, pady=10)
+bt_buttonOFF = customtkinter.CTkButton(root, text="BT Disconnect", command=bt_Disconnect, width=10)
+bt_buttonOFF.grid(row=0, column=4, padx=10, pady=10)
 
 # Create labels and entry fields for min and max sweep values
 min_label = Label(root, text="Min Sweep Value:")
