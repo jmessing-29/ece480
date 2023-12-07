@@ -212,8 +212,8 @@ bt_save = customtkinter.CTkButton(root, text="Save Figure and Data", command=sav
 bt_save.grid(row=0, column=3, padx=10, pady=20)
 
 # Add logging text box
-log_entry = Text(root, height=8, width=80)  # Adjust height and width as needed
-log_entry.grid(row=2, column=0, columnspan=4, padx=10, pady=10)
+log_entry = Text(root, height=8, width=90)  # Adjust height and width as needed
+log_entry.grid(row=2, column=0, columnspan=5, padx=10, pady=10)
 log_entry.config(state='disabled')  # Make the text widget read-only
 
 bt_buttonConn = customtkinter.CTkButton(root, text="BT Connect", command=bt_Connect)
