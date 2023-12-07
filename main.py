@@ -196,34 +196,20 @@ ani = FuncAnimation(fig, update_plot, blit=False, interval=1000)
 
 # Create and arrange the widgets using the grid manager
 canvas_widget = canvas.get_tk_widget()
-canvas_widget.grid(row=0, column=0, columnspan=4, padx=10, pady=10)
+canvas_widget.grid(row=1, column=0, columnspan=5, padx=20, pady=20)
 
 # Arrange buttons using the grid manager
 start_button = customtkinter.CTkButton(root, text="Start Experiment", command=start_animation)
-start_button.grid(row=1, column=0, padx=10, pady=10)
+start_button.grid(row=0, column=0, padx=10, pady=20)
 
 stop_button = customtkinter.CTkButton(root, text="Stop Experiment", command=stop_animation)
-stop_button.grid(row=1, column=1, padx=10, pady=10)
+stop_button.grid(row=0, column=1, padx=10, pady=20)
 
 reset_button = customtkinter.CTkButton(root, text="Reset", command=reset)
-reset_button.grid(row=1, column=2, padx=10, pady=10)
-
-# Create and arrange the widgets using the grid manager
-canvas_widget = canvas.get_tk_widget()
-canvas_widget.grid(row=0, column=0, columnspan=4, padx=10, pady=10)
-
-# Arrange buttons using the grid manager
-start_button = customtkinter.CTkButton(root, text="Start Experiment", command=start_animation)
-start_button.grid(row=1, column=0, padx=10, pady=10)
-
-stop_button = customtkinter.CTkButton(root, text="Stop Experiment", command=stop_animation)
-stop_button.grid(row=1, column=1, padx=10, pady=10)
-
-reset_button = customtkinter.CTkButton(root, text="Reset", command=reset)
-reset_button.grid(row=1, column=2, padx=10, pady=10)
+reset_button.grid(row=0, column=2, padx=10, pady=20)
 
 bt_save = customtkinter.CTkButton(root, text="Save Figure and Data", command=save)
-bt_save.grid(row=1, column=3, padx=10, pady=10)
+bt_save.grid(row=0, column=3, padx=10, pady=20)
 
 # Add logging text box
 log_entry = Text(root, height=8, width=80)  # Adjust height and width as needed
