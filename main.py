@@ -11,6 +11,7 @@ import pandas as pd
 import time
 import datetime
 import csv
+from tkinter import Label, Entry
 
 # Create the main window
 root = customtkinter.CTk()
@@ -234,6 +235,21 @@ bt_buttonOFF.grid(row=3, column=1, padx=10, pady=10)
 
 bt_save = customtkinter.CTkButton(root, text="Save Figure and Data", command=save)
 bt_save.grid(row=3, column=2, padx=10, pady=10)
+
+
+# Create labels and entry fields for min and max sweep values
+min_label = Label(root, text="Min Sweep Value:")
+min_label.grid(row=4, column=0, padx=10, pady=10)
+
+min_entry = Entry(root, width=10)  # Adjust the width as needed
+min_entry.grid(row=5, column=0, padx=5, pady=10)
+
+max_label = Label(root, text="Max Sweep Value:")
+max_label.grid(row=4, column=1, padx=10, pady=10)
+
+max_entry = Entry(root, width=10)  # Adjust the width as needed
+max_entry.grid(row=5, column=1, padx=5, pady=10)
+
 
 # Start the tkinter main loop
 root.mainloop()
