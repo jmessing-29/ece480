@@ -50,7 +50,7 @@ def update_plot(i):
 
     if animation_running:
         data = arduino.readline().decode().strip()
-        
+        log_entry(data)
         # Process the received data - assuming comma-separated values for current and voltage
         try:
             current, voltage = map(float, data.split(','))
@@ -74,11 +74,6 @@ def stop_animation():
     global animation_running
     animation_running = False
     log_message("Experiment stopped")
-
-def set_max_time():
-    global max_time
-    max_time = int(max_time_entry.get())
-    log_message(f"Max time set to {max_time} seconds")
 
 def bt_Connect():
     print("ON Clicked")
@@ -106,62 +101,6 @@ def bt_Disconnect():
         log_message("Serial Exception Occured")
     else:
         log_message("BT device disconnected")
-
-def bt_ON():
-    global arduino
-    try:
-        arduino.write(b'x')
-        income = arduino.readline()
-        print(income.decode())
-        log_message("Device Connected")
-        print("Message from arduino: " + income.decode())
-    except serial.SerialException:
-        # print("Exception occurred, likely no device connected")
-        log_message("Exception occurred, likely no device connected")
-    except AttributeError:
-        # print("Exception occurred, likely no device connected")
-        log_message("Exception occurred, likely no device connected")
-
-def bt_OFF():
-    global arduino
-    try:
-        arduino.write(b'b')
-        income = arduino.readline()
-        print("Message from arduino: " + income.decode())
-    except serial.SerialException:
-        print("Serial Exception Cccurred")
-    except AttributeError:
-        print("AttributeError occurred")
-
-def bt_5v():
-    global arduino
-    try:
-        arduino.write(b'y')
-        income = arduino.readline()
-        print("Message from arduino: " + income.decode())
-        log_message("5v Pump Activated")
-
-    except serial.SerialException:
-        print("Exception occurred, likely no device connected")
-        log_message("Serial Exception Occured")
-    except AttributeError:
-        print("Exception occurred, likely no device connected")
-        log_message("Attribute Error Occured")
-
-def bt_3_5v():
-    global arduino
-    try:
-        arduino.write(b'a')
-        income = arduino.readline()
-        print("Message from arduino: " + income.decode())
-        log_message("3.5v Pump Activated")
-
-    except serial.SerialException:
-        print("Exception occurred, likely no device connected")
-        log_message("Serial Exception Occured")
-    except AttributeError:
-        print("Exception occurred, likely no device connected")
-        log_message("Attribute Error Occured")
 
 def bt_Disconnect():
     print("OFF Clicked")
