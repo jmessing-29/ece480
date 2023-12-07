@@ -53,7 +53,7 @@ def update_plot(i):
         
         # Process the received data - assuming comma-separated values for current and voltage
         try:
-            current, voltage = map(float, data.split(','))  # Adjust as per your received data format
+            current, voltage = map(float, data.split(','))
             x_data.append(current)
             y_data.append(voltage)
             
@@ -236,18 +236,6 @@ bt_buttonConn.grid(row=3, column=0, padx=10, pady=10)
 
 bt_buttonOFF = customtkinter.CTkButton(root, text="BT Disconnect", command=bt_Disconnect)
 bt_buttonOFF.grid(row=3, column=1, padx=10, pady=10)
-
-bt_buttonON = customtkinter.CTkButton(root, text="BT ON", command=bt_ON)
-bt_buttonON.grid(row=4, column=0, padx=10, pady=10)
-
-bt_buttonOFF = customtkinter.CTkButton(root, text="BT OFF", command=bt_OFF)
-bt_buttonOFF.grid(row=4, column=1, padx=10, pady=10)
-
-bt_buttonPump5v = customtkinter.CTkButton(root, text="5v", command=bt_5v)
-bt_buttonPump5v.grid(row=5, column=0, padx=10, pady=10)
-
-bt_buttonPump3_5v = customtkinter.CTkButton(root, text="3.5v", command=bt_3_5v)
-bt_buttonPump3_5v.grid(row=5, column=1, padx=10, pady=10)
 
 bt_save = customtkinter.CTkButton(root, text="Save Figure and Data", command=save)
 bt_save.grid(row=6, column=0, padx=10, pady=10)
