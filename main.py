@@ -222,6 +222,9 @@ stop_button.grid(row=1, column=1, padx=10, pady=10)
 reset_button = customtkinter.CTkButton(root, text="Reset", command=reset)
 reset_button.grid(row=1, column=2, padx=10, pady=10)
 
+bt_save = customtkinter.CTkButton(root, text="Save Figure and Data", command=save)
+bt_save.grid(row=1, column=3, padx=10, pady=10)
+
 # Add logging text box
 log_entry = Text(root, height=8, width=80)  # Adjust height and width as needed
 log_entry.grid(row=2, column=0, columnspan=4, padx=10, pady=10)
@@ -232,10 +235,6 @@ bt_buttonConn.grid(row=3, column=0, padx=10, pady=10)
 
 bt_buttonOFF = customtkinter.CTkButton(root, text="BT Disconnect", command=bt_Disconnect)
 bt_buttonOFF.grid(row=3, column=1, padx=10, pady=10)
-
-bt_save = customtkinter.CTkButton(root, text="Save Figure and Data", command=save)
-bt_save.grid(row=3, column=2, padx=10, pady=10)
-
 
 # Create labels and entry fields for min and max sweep values
 min_label = Label(root, text="Min Sweep Value:")
