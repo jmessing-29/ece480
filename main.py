@@ -200,13 +200,13 @@ canvas_widget.grid(row=1, column=0, columnspan=5, padx=20, pady=20)
 
 # Arrange buttons using the grid manager
 start_button = customtkinter.CTkButton(root, text="Start Experiment", command=start_animation)
-start_button.grid(row=2, column=0, padx=10, pady=20)
+start_button.grid(row=2, column=0, padx=10, pady=20, sticky="w")
 
 stop_button = customtkinter.CTkButton(root, text="Stop Experiment", command=stop_animation)
-stop_button.grid(row=2, column=1, padx=10, pady=20)
+stop_button.grid(row=2, column=1, padx=10, pady=20, sticky="w")
 
 reset_button = customtkinter.CTkButton(root, text="Reset", command=reset)
-reset_button.grid(row=2, column=2, padx=10, pady=20)
+reset_button.grid(row=2, column=2, padx=10, pady=20, sticky="w")
 
 bt_save = customtkinter.CTkButton(root, text="Save Figure and Data", command=save)
 bt_save.grid(row=2, column=3, padx=10, pady=20)
@@ -217,6 +217,7 @@ log_entry.grid(row=3, column=0, columnspan=5, padx=10, pady=10)
 log_entry.config(state='disabled')  # Make the text widget read-only
 
 bt_buttonConn = customtkinter.CTkButton(root, text="BT Connect", command=bt_Connect, width=10)
+bt_buttonConn.grid(row=0, column=0, padx=10, pady=10, sticky="w")
 bt_buttonConn.grid(row=0, column=0, padx=10, pady=10)
 
 bt_buttonOFF = customtkinter.CTkButton(root, text="BT Disconnect", command=bt_Disconnect, width=10)
