@@ -97,23 +97,13 @@ def bt_Disconnect():
     print("Disconnect")
     global arduino
     try:
+        # arduino.write(b'z')
         arduino.close()
     except serial.SerialException:
         print("Exception occurred")
         log_message("Serial Exception Occured")
     else:
         log_message("BT device disconnected")
-
-def bt_Disconnect():
-    print("OFF Clicked")
-    global arduino
-    try:
-        arduino.write(b'z')
-        arduino.close()
-    except serial.SerialException:
-        print("Exception occurred, likely no device connected")
-    except AttributeError:
-        print("Exception occurred, likely no device connected")
 
 def save():
     current_time = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
