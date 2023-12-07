@@ -233,7 +233,7 @@ bt_buttonOFF = customtkinter.CTkButton(root, text="BT Disconnect", command=bt_Di
 bt_buttonOFF.grid(row=3, column=1, padx=10, pady=10)
 
 bt_save = customtkinter.CTkButton(root, text="Save Figure and Data", command=save)
-bt_save.grid(row=6, column=0, padx=10, pady=10)
+bt_save.grid(row=3, column=2, padx=10, pady=10)
 
 # Start the tkinter main loop
 root.mainloop()
