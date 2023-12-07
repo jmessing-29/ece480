@@ -42,27 +42,34 @@ max_time = 60
 # set up BT
 outgoingPort = 'dev/tty.HC-05-DevB'
 incomingPort = 'dev/tty.HC-05-DevB'
-arduino = Serial('COMX', 9600)  # !! HELLO JACKSON !! Replace 'COMX' with the Arduino's serial port, idk what it is
+arduino = Serial('/dev/cu.HC-05', 9600)
 
 # functions
 def update_plot(i):
     global x_data, y_data, ax
 
     if animation_running:
-        data = arduino.readline().decode().strip()
-        log_entry(data)
-        # Process the received data - assuming comma-separated values for current and voltage
-        try:
-            current, voltage = map(float, data.split(','))
-            x_data.append(current)
-            y_data.append(voltage)
-            
-            # Update the plot
-            line.set_data(x_data, y_data)
-            ax.relim()
-            ax.autoscale_view(tight=True)
-        except ValueError:
-            pass
+        if arduino.in_waiting > 0:
+            data = arduino.readline().decode().strip()
+            arduino.reset_input_buffer()
+            print(data)
+
+            # Process the received data - assuming comma-separated values for current and voltage
+            try:
+                if len(data.split(',')) != 2:
+                    time.sleep(0.1)
+                current, voltage = map(float, data.split(','))
+                x_data.append(current)
+                y_data.append(voltage)
+                
+                # Update the plot
+                line.set_data(x_data, y_data)
+                ax.relim()
+                ax.autoscale_view(tight=True)
+            except ValueError:
+                raise ValueError(f"Invalid data received: {data}")
+        else:
+            time.sleep(0.1)
 
 def start_animation():
     global animation_running
