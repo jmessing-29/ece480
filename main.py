@@ -71,10 +71,11 @@ def stop_animation():
     animation_running = False
     log_message("Experiment stopped")
 
-def set_max_time():
-    global max_time
-    max_time = int(max_time_entry.get())
-    log_message(f"Max time set to {max_time} seconds")
+def set_sweep_range():
+    global sweep_range
+    sweep_min = int(min_entry.get())
+    sweep_max = int(max_entry.get())
+    log_message(f"Sweep range set to {sweep_min, sweep_max} Volts")
 
 def bt_Connect():
     print("ON Clicked")
@@ -128,36 +129,6 @@ def bt_OFF():
         print("Serial Exception Cccurred")
     except AttributeError:
         print("AttributeError occurred")
-
-def bt_5v():
-    global arduino
-    try:
-        arduino.write(b'y')
-        income = arduino.readline()
-        print("Message from arduino: " + income.decode())
-        log_message("5v Pump Activated")
-
-    except serial.SerialException:
-        print("Exception occurred, likely no device connected")
-        log_message("Serial Exception Occured")
-    except AttributeError:
-        print("Exception occurred, likely no device connected")
-        log_message("Attribute Error Occured")
-
-def bt_3_5v():
-    global arduino
-    try:
-        arduino.write(b'a')
-        income = arduino.readline()
-        print("Message from arduino: " + income.decode())
-        log_message("3.5v Pump Activated")
-
-    except serial.SerialException:
-        print("Exception occurred, likely no device connected")
-        log_message("Serial Exception Occured")
-    except AttributeError:
-        print("Exception occurred, likely no device connected")
-        log_message("Attribute Error Occured")
 
 def bt_Disconnect():
     print("OFF Clicked")
@@ -221,6 +192,25 @@ bt_buttonConn.grid(row=0, column=0, padx=10, pady=10, sticky="w")
 
 bt_buttonOFF = customtkinter.CTkButton(root, text="BT Disconnect", command=bt_Disconnect, width=10)
 bt_buttonOFF.grid(row=0, column=3, padx=10, pady=10, sticky="e")
+
+
+# Variable to keep track of the current state of the button
+connect_state = False
+
+def toggle_text():
+    global toggle_state
+    if connect_state:
+        toggle_button.config(text="Off")
+        connect_state = False
+    else:
+        toggle_button.config(text="On")
+        connect_state = True
+
+# Create a button that toggles between "on" and "off" when clicked
+toggle_button = Button(root, text="Toggle", command=toggle_text)
+toggle_button.grid(row=6, column=0, columnspan=2, padx=10, pady=10)
+
+
 
 # Create labels and entry fields for min and max sweep values
 min_label = Label(root, text="Min Sweep Value:")
