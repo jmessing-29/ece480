@@ -104,32 +104,6 @@ def bt_Disconnect():
     else:
         log_message("BT device disconnected")
 
-def bt_ON():
-    global arduino
-    try:
-        arduino.write(b'x')
-        income = arduino.readline()
-        print(income.decode())
-        log_message("Device Connected")
-        print("Message from arduino: " + income.decode())
-    except serial.SerialException:
-        # print("Exception occurred, likely no device connected")
-        log_message("Exception occurred, likely no device connected")
-    except AttributeError:
-        # print("Exception occurred, likely no device connected")
-        log_message("Exception occurred, likely no device connected")
-
-def bt_OFF():
-    global arduino
-    try:
-        arduino.write(b'b')
-        income = arduino.readline()
-        print("Message from arduino: " + income.decode())
-    except serial.SerialException:
-        print("Serial Exception Cccurred")
-    except AttributeError:
-        print("AttributeError occurred")
-
 def bt_Disconnect():
     print("OFF Clicked")
     global arduino
