@@ -196,7 +196,7 @@ ani = FuncAnimation(fig, update_plot, blit=False, interval=1000)
 
 # Create and arrange the widgets using the grid manager
 canvas_widget = canvas.get_tk_widget()
-canvas_widget.grid(row=1, column=0, columnspan=5, padx=20, pady=20)
+canvas_widget.grid(row=1, column=0, columnspan=4, padx=20, pady=20)
 
 # Arrange buttons using the grid manager
 start_button = customtkinter.CTkButton(root, text="Start Experiment", command=start_animation)
@@ -220,7 +220,7 @@ bt_buttonConn = customtkinter.CTkButton(root, text="BT Connect", command=bt_Conn
 bt_buttonConn.grid(row=0, column=0, padx=10, pady=10, sticky="w")
 
 bt_buttonOFF = customtkinter.CTkButton(root, text="BT Disconnect", command=bt_Disconnect, width=10)
-bt_buttonOFF.grid(row=0, column=4, padx=10, pady=10)
+bt_buttonOFF.grid(row=0, column=3, padx=10, pady=10, sticky="e")
 
 # Create labels and entry fields for min and max sweep values
 min_label = Label(root, text="Min Sweep Value:")
