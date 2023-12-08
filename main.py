@@ -139,8 +139,9 @@ def reset():
     x_data = []
     y_data = []
     arduino.write(b'C')
-    log_message("Experiment reset. Start a new experiment to clear the figure")
+    log_message("Please wait 10 seconds to reconfigure")
     disable_buttons()
+    log_message("Experiment reset. Start a new experiment to clear the plot.")
 
 def disable_buttons():
     for button in [start_button, stop_button, reset_button, configure_button]:
