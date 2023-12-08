@@ -1,10 +1,12 @@
 import serial
+import time
 
 
 arduino = serial.Serial('/dev/tty.HC-05', 9600, timeout=.1)
 
 while True:
-  if arduino.in_waiting > 0:
-    print (arduino.readline().decode().strip())
+  arduino.write('c'.encode('utf-8'))
+  time.sleep(0.5)
+  
 
   
