@@ -140,6 +140,17 @@ def reset():
     y_data = []
     arduino.write(b'C')
     log_message("Experiment reset. Start a new experiment to clear the figure")
+    disable_buttons()
+
+def disable_buttons():
+    for button in [start_button, stop_button, reset_button, configure_button]:
+        button['state'] = 'disabled'
+    
+    root.update()  # Refresh the window to reflect the changes
+    time.sleep(10)
+    
+    for button in [start_button, stop_button, reset_button, configure_button]:
+        button['state'] = 'normal'
 
 # Create the animation
 ani = FuncAnimation(fig, update_plot, blit=False, interval=1000)
