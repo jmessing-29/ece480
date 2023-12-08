@@ -44,6 +44,7 @@ max_time = 60
 outgoingPort = 'dev/tty.HC-05-DevB'
 incomingPort = 'dev/tty.HC-05-DevB'
 arduino = Serial('/dev/cu.HC-05', 9600)
+# arduino = Serial('COM5', 9600)
 
 # functions
 def update_plot(i):
@@ -209,8 +210,6 @@ def toggle_text():
 # Create a button that toggles between "on" and "off" when clicked
 toggle_button = Button(root, text="Toggle", command=toggle_text)
 toggle_button.grid(row=6, column=0, columnspan=2, padx=10, pady=10)
-
-
 
 # Create labels and entry fields for min and max sweep values
 min_label = Label(root, text="Min Sweep Value:")
