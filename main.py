@@ -53,7 +53,7 @@ def update_plot(i):
     if animation_running:
         while arduino.in_waiting > 8:
             data = arduino.readline().decode().strip()
-            print('Data', data)
+            # print('Data', data)
             # Process the received data - assuming comma-separated values for current and voltage
             try:
                 current, voltage = map(float, data.split(','))
@@ -135,6 +135,7 @@ def reset():
     global x_data, y_data
     x_data = []
     y_data = []
+    print(x_data, y_data)
     arduino.write(b'c')
     log_message("Please wait 10 seconds to reconfigure")
     disable_buttons()
