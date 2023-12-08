@@ -43,22 +43,34 @@ max_time = 60
 # set up BT
 outgoingPort = 'dev/tty.HC-05-DevB'
 incomingPort = 'dev/tty.HC-05-DevB'
-arduino = "filler"
+arduino = Serial('/dev/cu.HC-05', 9600)
 
 # functions
 def update_plot(i):
+    global x_data, y_data, ax
+
     if animation_running:
-        if len(x_data) == max_time:
-            stop_animation()
-        x_data.append(len(x_data))
-        y_data.append(np.random.random())
-        line.set_color('blue')
-        line.set_data(x_data, y_data)
+        if arduino.in_waiting > 0:
+            data = arduino.readline().decode().strip()
+            arduino.reset_input_buffer()
+            print(data)
 
-        # Dynamically adjust the x and y axis limits based on data
-        ax.relim()
-        ax.autoscale_view(tight=True)
-
+            # Process the received data - assuming comma-separated values for current and voltage
+            try:
+                if len(data.split(',')) != 2:
+                    time.sleep(0.1)
+                current, voltage = map(float, data.split(','))
+                x_data.append(current)
+                y_data.append(voltage)
+                
+                # Update the plot
+                line.set_data(x_data, y_data)
+                ax.relim()
+                ax.autoscale_view(tight=True)
+            except ValueError:
+                raise ValueError(f"Invalid data received: {data}")
+        else:
+            time.sleep(0.1)
 
 def start_animation():
     global animation_running
@@ -94,16 +106,15 @@ def bt_Connect():
     # arduino.close()
 
 def bt_Disconnect():
-    print("Disconnect")
+    print("OFF Clicked")
     global arduino
     try:
-        # arduino.write(b'z')
+        arduino.write(b'z')
         arduino.close()
     except serial.SerialException:
-        print("Exception occurred")
-        log_message("Serial Exception Occured")
-    else:
-        log_message("BT device disconnected")
+        print("Exception occurred, likely no device connected")
+    except AttributeError:
+        print("Exception occurred, likely no device connected")
 
 def save():
     current_time = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
@@ -141,7 +152,32 @@ stop_button = customtkinter.CTkButton(root, text="Stop Experiment", command=stop
 stop_button.grid(row=2, column=1, padx=10, pady=20, sticky="w")
 
 reset_button = customtkinter.CTkButton(root, text="Reset", command=reset)
-reset_button.grid(row=2, column=2, padx=10, pady=20, sticky="w")
+reset_button.grid(row=1, column=2, padx=10, pady=10)
+
+# Create and arrange the widgets using the grid manager
+canvas_widget = canvas.get_tk_widget()
+canvas_widget.grid(row=0, column=0, columnspan=4, padx=10, pady=10)
+
+# Arrange buttons using the grid manager
+start_button = customtkinter.CTkButton(root, text="Start Experiment", command=start_animation)
+start_button.grid(row=1, column=0, padx=10, pady=10)
+
+stop_button = customtkinter.CTkButton(root, text="Stop Experiment", command=stop_animation)
+stop_button.grid(row=1, column=1, padx=10, pady=10)
+
+reset_button = customtkinter.CTkButton(root, text="Reset", command=reset)
+reset_button.grid(row=1, column=2, padx=10, pady=10)
+
+# Add logging text box
+log_entry = Text(root, height=8, width=80)  # Adjust height and width as needed
+log_entry.grid(row=2, column=0, columnspan=4, padx=10, pady=10)
+log_entry.config(state='disabled')  # Make the text widget read-only
+
+bt_buttonConn = customtkinter.CTkButton(root, text="BT Connect", command=bt_Connect)
+bt_buttonConn.grid(row=3, column=0, padx=10, pady=10)
+
+bt_buttonOFF = customtkinter.CTkButton(root, text="BT Disconnect", command=bt_Disconnect)
+bt_buttonOFF.grid(row=3, column=1, padx=10, pady=10)
 
 bt_save = customtkinter.CTkButton(root, text="Save Figure and Data", command=save)
 bt_save.grid(row=2, column=3, padx=10, pady=20)
