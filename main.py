@@ -11,6 +11,7 @@ import pandas as pd
 import time
 import datetime
 import csv
+from tkinter import Label, Entry
 
 # Create the main window
 root = customtkinter.CTk()
@@ -82,6 +83,12 @@ def stop_animation():
     animation_running = False
     log_message("Experiment stopped")
 
+def set_sweep_range():
+    global sweep_range
+    sweep_min = int(min_entry.get())
+    sweep_max = int(max_entry.get())
+    log_message(f"Sweep range set to {sweep_min, sweep_max} Volts")
+
 def bt_Connect():
     print("ON Clicked")
     global arduino
@@ -97,17 +104,6 @@ def bt_Connect():
         print(income.decode())
         log_message(income.decode())
     # arduino.close()
-
-def bt_Disconnect():
-    print("Disconnect")
-    global arduino
-    try:
-        arduino.close()
-    except serial.SerialException:
-        print("Exception occurred")
-        log_message("Serial Exception Occured")
-    else:
-        log_message("BT device disconnected")
 
 def bt_Disconnect():
     print("OFF Clicked")
@@ -146,14 +142,14 @@ ani = FuncAnimation(fig, update_plot, blit=False, interval=1000)
 
 # Create and arrange the widgets using the grid manager
 canvas_widget = canvas.get_tk_widget()
-canvas_widget.grid(row=0, column=0, columnspan=4, padx=10, pady=10)
+canvas_widget.grid(row=1, column=0, columnspan=4, padx=20, pady=20)
 
 # Arrange buttons using the grid manager
 start_button = customtkinter.CTkButton(root, text="Start Experiment", command=start_animation)
-start_button.grid(row=1, column=0, padx=10, pady=10)
+start_button.grid(row=2, column=0, padx=10, pady=20, sticky="w")
 
 stop_button = customtkinter.CTkButton(root, text="Stop Experiment", command=stop_animation)
-stop_button.grid(row=1, column=1, padx=10, pady=10)
+stop_button.grid(row=2, column=1, padx=10, pady=20, sticky="w")
 
 reset_button = customtkinter.CTkButton(root, text="Reset", command=reset)
 reset_button.grid(row=1, column=2, padx=10, pady=10)
@@ -184,7 +180,51 @@ bt_buttonOFF = customtkinter.CTkButton(root, text="BT Disconnect", command=bt_Di
 bt_buttonOFF.grid(row=3, column=1, padx=10, pady=10)
 
 bt_save = customtkinter.CTkButton(root, text="Save Figure and Data", command=save)
-bt_save.grid(row=6, column=0, padx=10, pady=10)
+bt_save.grid(row=2, column=3, padx=10, pady=20)
+
+# Add logging text box
+log_entry = Text(root, height=8, width=90)  # Adjust height and width as needed
+log_entry.grid(row=3, column=0, columnspan=5, padx=10, pady=10)
+log_entry.config(state='disabled')  # Make the text widget read-only
+
+bt_buttonConn = customtkinter.CTkButton(root, text="BT Connect", command=bt_Connect, width=10)
+bt_buttonConn.grid(row=0, column=0, padx=10, pady=10, sticky="w")
+
+bt_buttonOFF = customtkinter.CTkButton(root, text="BT Disconnect", command=bt_Disconnect, width=10)
+bt_buttonOFF.grid(row=0, column=3, padx=10, pady=10, sticky="e")
+
+
+# Variable to keep track of the current state of the button
+connect_state = False
+
+def toggle_text():
+    global toggle_state
+    if connect_state:
+        toggle_button.config(text="Off")
+        connect_state = False
+    else:
+        toggle_button.config(text="On")
+        connect_state = True
+
+# Create a button that toggles between "on" and "off" when clicked
+toggle_button = Button(root, text="Toggle", command=toggle_text)
+toggle_button.grid(row=6, column=0, columnspan=2, padx=10, pady=10)
+
+
+
+# Create labels and entry fields for min and max sweep values
+min_label = Label(root, text="Min Sweep Value:")
+min_label.grid(row=4, column=0, padx=10, pady=10)
+
+min_entry = Entry(root, width=10)  # Adjust the width as needed
+min_entry.grid(row=5, column=0, padx=5, pady=10)
+
+max_label = Label(root, text="Max Sweep Value:")
+max_label.grid(row=4, column=1, padx=10, pady=10)
+
+max_entry = Entry(root, width=10)  # Adjust the width as needed
+max_entry.grid(row=5, column=1, padx=5, pady=10)
+
 
 # Start the tkinter main loop
 root.mainloop()
