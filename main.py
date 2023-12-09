@@ -14,7 +14,7 @@ import datetime
 root = customtkinter.CTk()
 root.title("Contaminant Sensing")
 
-# Set window dimensions to full screen dimensions
+# Set window dimensions 
 screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()
 root.geometry(f"{screen_width/2}x{screen_height/3}")
