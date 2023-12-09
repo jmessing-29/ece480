@@ -56,10 +56,9 @@ def update_plot(i):
             # print('Data', data)
             # Process the received data - assuming comma-separated values for current and voltage
             try:
-                current, voltage = map(float, data.split(','))
-                x_data.append(current-2.5)
-                y_data.append(voltage*3.0/(1023.0))
-
+                voltage, current = map(float, data.split(','))
+                x_data.append(voltage-2.5)
+                y_data.append(current*3.0/(1023.0))
             
                 # Update the plot
                 line.set_data(x_data, y_data)
@@ -178,9 +177,6 @@ log_entry.config(state='disabled')  # Make the text widget read-only
 
 bt_buttonConn = customtkinter.CTkButton(root, text="BT Disconnect", width=10, fg_color='blue', command=bt_Disconnect)
 bt_buttonConn.grid(row=0, column=0, padx=10, pady=10, sticky="w")
-
-# bt_buttonOFF = customtkinter.CTkButton(root, text="BT Disconnect", command=bt_Disconnect, width=10)
-# bt_buttonOFF.grid(row=0, column=3, padx=10, pady=10, sticky="e")
 
 # Create labels and entry fields for min and max sweep values
 sweeps_label = Label(root, text="Number of Sweeps:")
