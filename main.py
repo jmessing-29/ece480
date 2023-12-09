@@ -2,7 +2,6 @@ from tkinter import *
 import customtkinter
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
-from matplotlib.figure import Figure
 from matplotlib.animation import FuncAnimation
 import numpy as np
 from serial import Serial
@@ -10,8 +9,6 @@ import serial
 import pandas as pd
 import time
 import datetime
-import csv
-from tkinter import Label, Entry
 
 # Create the main window
 root = customtkinter.CTk()
